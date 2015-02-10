@@ -3,7 +3,7 @@
 Teaching Teamwork was built by [The Concord Consortium](http://concord.org/) for the
 [Teaching Teamworks Project](http://concord.org/projects/teaching-teamwork).
 
-See [the app here](concord-consortium.github.io/teaching-teamwork/#two-resistors).
+See [the app here](http://concord-consortium.github.io/teaching-teamwork/#two-resistors).
 
 ## Building and Running Locally
 
