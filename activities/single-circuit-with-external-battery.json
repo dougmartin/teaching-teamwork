@@ -1,10 +1,10 @@
 {
-  "name": "Circuit with external battery",
+  "name": "Single circuit board with external battery",
   "externalComponents": [
     {
       "type": "battery",
       "UID": "source",
-      "voltage": 12,
+      "voltage": 12.5,
       "connections": "battery_1,battery_2"
     },
     {
