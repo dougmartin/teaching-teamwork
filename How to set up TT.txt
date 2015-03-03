@@ -1,9 +1,0 @@
-Open your terminal, and navigate to whatever folder you keep your projects in: (e.g. 'cd projects')
-Clone the git repository: git clone https://github.com/concord-consortium/teaching-teamwork.git
-Enter the projects: cd teaching-teamwork
-Follow the commands in the Readme, visible at https://github.com/concord-consortium/teaching-teamwork. Copy and paste all the commands listed in the Dependencies section, one by one.
-If you don't encounter any problems, now enter: npm start
-You should see some stuff scroll by, and no errors
-Open a new tab (⌘-t) and enter the commends under "Testing the breadboard library locally"
-A browser window should pop up showing TT. If it doesn't, navigate to http://localhost:8080/
-Finally, make a change in the file activities/two-resistors.json (e.g. change the title) and save it. The browser window should automatically reload with your change. You are now authoring.
