@@ -97,7 +97,7 @@ module.exports = CalculatorView = React.createClass({
       }
     }
     else if (key === this.backspace) {
-      if (!empty) {
+      if (!empty && !this.state.error) {
         input = input.substr(0, input.length - 1);
       }
     }
