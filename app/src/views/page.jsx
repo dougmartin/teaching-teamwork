@@ -1,4 +1,5 @@
 require('./chat.jsx');
+require('./calculator.jsx');
 
 var config = require('../config');
 
@@ -28,6 +29,7 @@ module.exports = PageView = React.createClass({
         <div id="breadboard-wrapper"></div>
         { chat }
         <div id="image-wrapper">{ image }</div>
+        <CalculatorView />
       </div>
     );
   }
