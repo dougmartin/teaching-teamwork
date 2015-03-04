@@ -1,5 +1,7 @@
 // adapted from http://thecodeplayer.com/walkthrough/javascript-css3-calculator
 
+var logController = require('../controllers/log');
+    
 module.exports = CalculatorView = React.createClass({
   
   getInitialState: function() {
@@ -22,16 +24,19 @@ module.exports = CalculatorView = React.createClass({
   },
   
   open: function (e) {
+    logController.logEvent("Opened calculator");
     this.setState({open: true});
     e.preventDefault();    
   },
 
   close: function (e) {
+    logController.logEvent("Closed calculator");
     this.setState({open: false});
     e.preventDefault();    
   },
   
   clear: function (e) {
+    logController.logEvent("Cleared calculator");
     this.setState({
       input: '',
       evaled: false,
@@ -41,10 +46,12 @@ module.exports = CalculatorView = React.createClass({
   },
 
   eval: function (e) {
-    var equation = this.state.input.replace(/(\+|\-|\*|\/|\.)$/, ''),
+    var input = this.state.input,
+        equation = input.replace(/(\+|\-|\*|\/|\.)$/, ''),
         key = e.target.innerHTML,
         error = false,
-        evaled, input;
+        evaled;
+        
     if (equation) {
       if (key === this.inverse) {
         equation = "1/(" + equation + ")";
@@ -55,24 +62,37 @@ module.exports = CalculatorView = React.createClass({
       try {
         evaled = eval(equation);
         error = isNaN(evaled) || !isFinite(evaled);
-        input = evaled.toString();
+        if (!error) {
+          input = evaled.toString();
+        }
+        logController.logEvent("Calculation performed", {
+          "key": key,
+          "calculation": equation,
+          "result": evaled.toString()
+        });
       }
       catch (e) {
-        input = 'Error!';
+        logController.logEvent("Calculation error", {
+          "key": key,
+          "calculation": equation,
+          "error": e.toString()
+        });
         error = true;
       }
       this.setState({
         input: input,
-        evaled: true,
+        evaled: !error,
         error: error
       });
     }
+    
     e.stopPropagation();
     e.preventDefault();    
   },
   
   keyPressed: function (e) {
     var input = this.state.input,
+        preInput = input,
         empty = input.length === 0,
         endsWithOperator = input.match(/(\+|\-|\*|\/)$/),
         key = e.target.innerHTML,
@@ -82,7 +102,7 @@ module.exports = CalculatorView = React.createClass({
     if (e.target.nodeName !== 'SPAN') {
       return;
     }
-
+    
     if (key.match(/(\+|\-|\*|\/)/)) {
       if (!empty) {
         if (!endsWithOperator || key == '-') {
@@ -122,6 +142,13 @@ module.exports = CalculatorView = React.createClass({
       input += key;
     }
     
+    logController.logEvent("Calculator button pressed", {
+      "button": key,
+      "preCalculation": preInput,
+      "postCalculation": input,
+      "changed": this.state.input != input
+    });    
+
     if (this.state.input != input) {
       this.setState({
         input: input,
@@ -134,6 +161,7 @@ module.exports = CalculatorView = React.createClass({
   
   startDrag: function (e) {
     this.dragging = (this.state.open && (e.target.nodeName != 'SPAN'));
+    this.dragged = false;
     if (!this.dragging) {
       return;
     }
@@ -148,16 +176,30 @@ module.exports = CalculatorView = React.createClass({
   },
   
   drag: function (e) {
+    var newPos;
     if (this.dragging) {
       // the calculations are reversed here only because we are setting the right pos and not the left
-      this.setState({
+      newPos = { 
         openRight: this.startCalculatorPos.right + (this.startMousePos.x - e.clientX),
         openTop: this.startCalculatorPos.top + (e.clientY - this.startMousePos.y)
-      });
+      };
+      if ((newPos.openRight != this.state.openRight) || (newPos.openTop != this.state.openTop)) {
+        this.setState(newPos);
+        this.dragged = true;
+      }
     }
   },
   
   endDrag:  function (e) {
+    if (this.dragged) {
+      logController.logEvent("Calculator dragged", {
+        "startTop": this.startCalculatorPos.top,
+        "startRight": this.startCalculatorPos.right,
+        "endTop": this.state.openTop,
+        "endRight": this.state.openRight,
+      });
+      this.dragged = false;
+    }
     this.dragging = false;
   },
 
