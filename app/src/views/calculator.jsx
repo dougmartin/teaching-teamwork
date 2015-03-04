@@ -1,6 +1,7 @@
 // adapted from http://thecodeplayer.com/walkthrough/javascript-css3-calculator
 
 module.exports = CalculatorView = React.createClass({
+  
   getInitialState: function() {
     this.backspace = String.fromCharCode(8592);
     this.inverse = '1/x';
@@ -12,7 +13,11 @@ module.exports = CalculatorView = React.createClass({
       input: '',
       open: false,
       evaled: false,
-      error: false
+      error: false,
+      closeRight: 10,
+      closeTop: 10,
+      openRight: 10,
+      openTop: 10
     };
   },
   
@@ -126,11 +131,45 @@ module.exports = CalculatorView = React.createClass({
     
     e.preventDefault();    
   },
+  
+  startDrag: function (e) {
+    this.dragging = (this.state.open && (e.target.nodeName != 'SPAN'));
+    if (!this.dragging) {
+      return;
+    }
+    this.startCalculatorPos = {
+      right: this.state.openRight,
+      top: this.state.openTop,
+    };
+    this.startMousePos = {
+      x: e.clientX,
+      y: e.clientY
+    };
+  },
+  
+  drag: function (e) {
+    if (this.dragging) {
+      // the calculations are reversed here only because we are setting the right pos and not the left
+      this.setState({
+        openRight: this.startCalculatorPos.right + (this.startMousePos.x - e.clientX),
+        openTop: this.startCalculatorPos.top + (e.clientY - this.startMousePos.y)
+      });
+    }
+  },
+  
+  endDrag:  function (e) {
+    this.dragging = false;
+  },
 
   render: function() {
+    var style = {
+      top: this.state.open ? this.state.openTop : this.state.closeTop, 
+      right: this.state.open ? this.state.openRight : this.state.closeRight
+    };
+    
     if (this.state.open) {
       return (
-        <div id="calculator">
+        <div id="calculator" onMouseDown={ this.startDrag } onMouseMove={ this.drag } onMouseUp={ this.endDrag } style={ style }>
           <div className="top very-top">
             <span className="title">Calculator</span>
             <span className="close" onClick={ this.close }>X</span>
@@ -171,7 +210,7 @@ module.exports = CalculatorView = React.createClass({
     }
     else {
       return (
-        <div id="open-calculator" onClick={ this.open }>
+        <div id="open-calculator" onClick={ this.open } style={ style }>
           Calculator
         </div>
       );

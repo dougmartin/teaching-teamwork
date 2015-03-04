@@ -140,8 +140,7 @@ form button:disabled {
 /* Using box shadows to create 3D effects */
 #calculator, #open-calculator {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  /* the top & right positions are set in the component */
   
 	width: 359px;
 	height: auto;
@@ -159,6 +158,9 @@ form button:disabled {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+}
+#calculator {
+  cursor: move;
 }
 #open-calculator {
   width: auto;
