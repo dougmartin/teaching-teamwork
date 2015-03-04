@@ -65,14 +65,14 @@ module.exports = CalculatorView = React.createClass({
         if (!error) {
           input = evaled.toString();
         }
-        logController.logEvent("Calculation performed", {
+        logController.logEvent("Calculation performed", null, {
           "key": key,
           "calculation": equation,
           "result": evaled.toString()
         });
       }
       catch (e) {
-        logController.logEvent("Calculation error", {
+        logController.logEvent("Calculation error", null, {
           "key": key,
           "calculation": equation,
           "error": e.toString()
@@ -142,7 +142,7 @@ module.exports = CalculatorView = React.createClass({
       input += key;
     }
     
-    logController.logEvent("Calculator button pressed", {
+    logController.logEvent("Calculator button pressed", null, {
       "button": key,
       "preCalculation": preInput,
       "postCalculation": input,
@@ -192,7 +192,7 @@ module.exports = CalculatorView = React.createClass({
   
   endDrag:  function (e) {
     if (this.dragged) {
-      logController.logEvent("Calculator dragged", {
+      logController.logEvent("Calculator dragged", null, {
         "startTop": this.startCalculatorPos.top,
         "startRight": this.startCalculatorPos.right,
         "endTop": this.state.openTop,

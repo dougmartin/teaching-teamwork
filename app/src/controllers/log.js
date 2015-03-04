@@ -32,6 +32,8 @@ var logManagerUrl = 'http://teaching-teamwork-log-manager.herokuapp.com/api/logs
       }
     },
 
+    // value: simple value (string, boolean, number)
+    // parameters: object
     logEvent = function(eventName, value, parameters) {
       var data = {
         application: "Teaching Teamwork",
