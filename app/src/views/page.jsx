@@ -11,9 +11,7 @@ module.exports = React.createClass({
     var activity = this.props.activity ? this.props.activity : {},
         activityName = activity.name ? ': ' + activity.name : '',
         circuit = this.props.circuit ? (<h2>Circuit { this.props.circuit }</h2>) : null,
-        breadboard = sparks && sparks.workbenchController ? sparks.workbenchController.breadboardController : null,
-        client = this.props.activity && this.props.circuit ? this.props.activity.clients[this.props.circuit - 1] : null,
-        notes = client ? client.notes : "";
+        notes = this.props.client ? (this.props.client.notes || "") : "";
         
     return (
       <div className="tt-page">
@@ -23,7 +21,7 @@ module.exports = React.createClass({
         { activity.clients && activity.clients.length > 1 ? (<ChatView {...activity} />) : null }
         <div id="image-wrapper">{ activity.image ? (<img src={ config.modelsBase + activity.image } />) : null }</div>
         <CalculatorView />
-        <div id="notes-wrapper"><NotesView text={ notes } className="tt-notes" breadboard={ breadboard } /></div>
+        <div id="notes-wrapper"><NotesView text={ notes } className="tt-notes" breadboard={ this.props.breadboard } /></div>
       </div>
     );
   }

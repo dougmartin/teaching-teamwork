@@ -11,12 +11,19 @@ module.exports = React.createClass({
   getInitialState: function () {
     return {
       activity: null,
-      circuit: 0
+      circuit: 0,
+      breadboard: null,
+      client: null
     };
   },
   
   render: function () {
-    return PageView({activity: this.state.activity, circuit: this.state.circuit});
+    return PageView({
+      activity: this.state.activity, 
+      circuit: this.state.circuit, 
+      breadboard: this.state.breadboard, 
+      client: this.state.client
+    });
   },
   
   componentDidMount: function () {
@@ -79,13 +86,19 @@ module.exports = React.createClass({
     this.setState({activity: ttWorkbench});
 
     userController.init(ttWorkbench.clients.length, function(clientNumber) {
+      var circuit = (1 * clientNumber) + 1;
+      
       logController.setClientNumber(clientNumber);
       workbenchAdaptor = new WorkbenchAdaptor(clientNumber)
       workbenchFBConnector = new WorkbenchFBConnector(userController, clientNumber, workbenchAdaptor);
       workbench = workbenchAdaptor.processTTWorkbench(ttWorkbench);
       sparks.createWorkbench(workbench, "breadboard-wrapper");
       
-      self.setState({circuit: (1 * clientNumber) + 1});
+      self.setState({
+        client: ttWorkbench.clients[circuit - 1],
+        circuit: circuit,
+        breadboard: sparks.workbenchController.breadboardController
+      });
 
       logController.startListeningToCircuitEvents();
     });
