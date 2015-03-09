@@ -1,35 +1,33 @@
-require('./chat.jsx');
-require('./calculator.jsx');
+var ChatView = require('./chat.jsx'),
+    CalculatorView = require('./calculator.jsx'),
+    NotesView = require('./notes'),
+    config = require('../config');
 
-var config = require('../config');
-
-module.exports = PageView = React.createClass({
+module.exports = React.createClass({
+  displayName: 'Page',
+  
   render: function() {
-    var title,
-        activity = this.props.activity ? this.props.activity : {},
-        image = null,
-        chat = null;
-    if (activity.name) {
-      title = <h1>Teaching Teamwork: { activity.name }</h1>
-    } else {
-      title = <h1>Teaching Teamwork</h1>
-    }
-
-    if (activity.image) {
-      image = <img src={ config.modelsBase + activity.image } />
-    }
-
-    if (activity.clients && activity.clients.length > 1) {
-      chat = <ChatView {...activity} />
-    }
+    var activity = this.props.activity ? this.props.activity : {},
+        activityName = activity.name ? ': ' + activity.name : '',
+        circuit = this.props.circuit ? (<h2>Circuit { this.props.circuit }</h2>) : null,
+        client,
+        notes,
+        breadboard;
+        
+        if (this.props.activity && this.props.circuit) {
+          client = this.props.activity.clients[this.props.circuit - 1];
+          notes = client ? client.notes : "";
+        }
+        
     return (
       <div className="tt-page">
-        { title }
-        <h2>Circuit { this.props.circuit }</h2>
+        <h1>Teaching Teamwork{ activityName }</h1>
+        { circuit }
         <div id="breadboard-wrapper"></div>
-        { chat }
-        <div id="image-wrapper">{ image }</div>
+        { activity.clients && activity.clients.length > 1 ? (<ChatView {...activity} />) : null }
+        <div id="image-wrapper">{ activity.image ? (<img src={ config.modelsBase + activity.image } />) : null }</div>
         <CalculatorView />
+        <div id="notes-wrapper"><NotesView text={ notes } className="tt-notes" /></div>
       </div>
     );
   }

@@ -2,7 +2,7 @@
 
 var logController = require('../controllers/log');
     
-module.exports = CalculatorView = React.createClass({
+module.exports = React.createClass({
   
   getInitialState: function() {
     this.backspace = String.fromCharCode(8592);

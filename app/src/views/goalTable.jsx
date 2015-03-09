@@ -1,4 +1,4 @@
-module.exports = GoalTable = React.createClass({
+module.exports = React.createClass({
   render: function() {
     var rows = this.props.goal.map(function(val, i) {
       return (<tr>
