@@ -4,6 +4,8 @@ var logController = require('../controllers/log');
     
 module.exports = React.createClass({
   
+  displayName: 'Calculator',
+  
   getInitialState: function() {
     this.backspace = String.fromCharCode(8592);
     this.inverse = '1/x';

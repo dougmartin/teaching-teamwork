@@ -4,6 +4,8 @@ var GoalTable = require('./goalTable.jsx'),
     logController = require('../controllers/log');
 
 module.exports = React.createClass({
+  displayName: 'Chat',
+  
   getInitialState: function() {
     this.items = [];
     return {items: [], text: ""};

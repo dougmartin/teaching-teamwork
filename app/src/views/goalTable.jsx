@@ -1,7 +1,9 @@
 module.exports = React.createClass({
+  displayName: 'GoalTable',
+  
   render: function() {
     var rows = this.props.goal.map(function(val, i) {
-      return (<tr>
+      return (<tr key={i}>
                 <td>{ i+1 }</td>
                 <td>{ val }</td>
                 <td className="actual"></td>

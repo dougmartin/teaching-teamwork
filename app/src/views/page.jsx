@@ -4,6 +4,7 @@ var ChatView = require('./chat.jsx'),
     config = require('../config');
 
 module.exports = React.createClass({
+  
   displayName: 'Page',
   
   render: function() {
@@ -17,7 +18,7 @@ module.exports = React.createClass({
         if (this.props.activity && this.props.circuit) {
           client = this.props.activity.clients[this.props.circuit - 1];
           notes = client ? client.notes : "";
-          breadboard = sparks.workbenchController.breadboardView;
+          breadboard = sparks.workbenchController.breadboardController;
         }
         
     return (

@@ -8,14 +8,14 @@ module.exports = React.createClass({
     if (!this.props.text) {
       return React.DOM.div({});
     }
-    return React.DOM.div({className: this.props.className || 'notes'}, this.calculateMeasurement(this.props.text));
+    return React.DOM.div({className: this.props.className || 'notes', dangerouslySetInnerHTML: {__html: this.calculateMeasurement(this.props.text)}});
   },
   
   calculateMeasurement: function (text){
     var context = {
           breadboard: this.props.breadboard
         },
-        components = this.props.breadboard ? this.props.breadboard.component : null, 
+        components = this.props.breadboard ? this.props.breadboard.getComponents() : null, 
         result,
         key;
     
@@ -42,13 +42,12 @@ module.exports = React.createClass({
     // replace all the bracket delimited javascript
     result = text.replace(/\[([^\]]+)\]/g, function (match, contents) {
       try {
-        // evaling inside a called function allows us to set this (using eval.call doesn't do it)
-        return function (contents) {
+        with (context) {
           return eval(contents);
-        }.call(context, contents);
+        }
       }
       catch (e) {
-        return '';
+        return '<i>n/a</i>';
       }
     });
     

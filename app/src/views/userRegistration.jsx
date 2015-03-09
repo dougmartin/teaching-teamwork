@@ -2,6 +2,8 @@ var userController;
 
 // add a global UserRegistrationView variable because its statics are called in other modules
 module.exports = UserRegistrationView = React.createClass({
+  displayName: 'UserRegistration',
+  
   statics: {
     // open a dialog with props object as props
     open: function(_userController, data) {
@@ -144,7 +146,7 @@ module.exports = UserRegistrationView = React.createClass({
         }
 
         clientChoices.push(
-          <div>
+          <div key={ i } >
             <input type="radio" name="clientSelection"  defaultChecked={ selected } value={ i } onClick={ this.handleClientSelection }/>Circuit { i+1 } ({ userSpan })
           </div> );
       }
