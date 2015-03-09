@@ -15,7 +15,7 @@ module.exports = React.createClass({
     var context = {
           breadboard: this.props.breadboard
         },
-        components = this.props.breadboard ? this.props.breadboard.components : null, 
+        components = this.props.breadboard ? this.props.breadboard.component : null, 
         result,
         key;
     

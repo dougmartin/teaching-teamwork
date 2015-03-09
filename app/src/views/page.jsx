@@ -17,6 +17,7 @@ module.exports = React.createClass({
         if (this.props.activity && this.props.circuit) {
           client = this.props.activity.clients[this.props.circuit - 1];
           notes = client ? client.notes : "";
+          breadboard = sparks.workbenchController.breadboardView;
         }
         
     return (
@@ -27,7 +28,7 @@ module.exports = React.createClass({
         { activity.clients && activity.clients.length > 1 ? (<ChatView {...activity} />) : null }
         <div id="image-wrapper">{ activity.image ? (<img src={ config.modelsBase + activity.image } />) : null }</div>
         <CalculatorView />
-        <div id="notes-wrapper"><NotesView text={ notes } className="tt-notes" /></div>
+        <div id="notes-wrapper"><NotesView text={ notes } className="tt-notes" breadboard={ breadboard } /></div>
       </div>
     );
   }
