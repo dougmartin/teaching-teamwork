@@ -79,14 +79,14 @@ module.exports = React.createClass({
     this.setState({activity: ttWorkbench});
 
     userController.init(ttWorkbench.clients.length, function(clientNumber) {
-      self.setState({circuit: (1 * clientNumber) + 1});
-
       logController.setClientNumber(clientNumber);
       workbenchAdaptor = new WorkbenchAdaptor(clientNumber)
       workbenchFBConnector = new WorkbenchFBConnector(userController, clientNumber, workbenchAdaptor);
       workbench = workbenchAdaptor.processTTWorkbench(ttWorkbench);
       sparks.createWorkbench(workbench, "breadboard-wrapper");
       
+      self.setState({circuit: (1 * clientNumber) + 1});
+
       logController.startListeningToCircuitEvents();
     });
   }

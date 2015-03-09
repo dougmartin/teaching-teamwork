@@ -11,15 +11,9 @@ module.exports = React.createClass({
     var activity = this.props.activity ? this.props.activity : {},
         activityName = activity.name ? ': ' + activity.name : '',
         circuit = this.props.circuit ? (<h2>Circuit { this.props.circuit }</h2>) : null,
-        client,
-        notes,
-        breadboard;
-        
-        if (this.props.activity && this.props.circuit) {
-          client = this.props.activity.clients[this.props.circuit - 1];
-          notes = client ? client.notes : "";
-          breadboard = sparks.workbenchController.breadboardController;
-        }
+        breadboard = sparks && sparks.workbenchController ? sparks.workbenchController.breadboardController : null,
+        client = this.props.activity && this.props.circuit ? this.props.activity.clients[this.props.circuit - 1] : null,
+        notes = client ? client.notes : "";
         
     return (
       <div className="tt-page">
