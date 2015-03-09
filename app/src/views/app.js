@@ -60,12 +60,15 @@ module.exports = React.createClass({
   },  
   
   parseActivity: function (activityName, rawData) {
+    var parsedData;
     try {
-      this.startActivity(activityName, JSON.parse(rawData));
+      parsedData = JSON.parse(rawData);
     }
     catch (e) {
       alert('Unable to parse JSON for ' + activityName);
+      return
     }
+    this.startActivity(activityName, parsedData);
   },
 
   startActivity: function (activityName, ttWorkbench) {
