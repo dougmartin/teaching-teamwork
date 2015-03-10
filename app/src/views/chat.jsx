@@ -1,11 +1,11 @@
-require('./goalTable.jsx');
+var GoalTable = require('./goalTable.jsx'),
+    ReactTransitionGroup = React.addons.TransitionGroup,
+    userController = require('../controllers/user'),
+    logController = require('../controllers/log');
 
-var ReactTransitionGroup = React.addons.TransitionGroup;
-
-var userController  = require('../controllers/user'),
-    logController   = require('../controllers/log');
-
-module.exports = ChatView = React.createClass({
+module.exports = React.createClass({
+  displayName: 'Chat',
+  
   getInitialState: function() {
     this.items = [];
     return {items: [], text: ""};
