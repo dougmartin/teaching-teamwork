@@ -26,7 +26,8 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-browserify": "^3.0.0",
     "reactify": "^1.0.0",
-    "vinyl-source-stream": "^1.0.0"
+    "vinyl-source-stream": "^1.0.0",
+    "event-stream": "^3.3.0"
   },
   "browserify-shim": {
     "external": "global:External"

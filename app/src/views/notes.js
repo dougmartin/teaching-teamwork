@@ -1,24 +1,24 @@
 // adapted from SPARKS math-parser.js
 
 module.exports = React.createClass({
-  
+
   displayName: 'Notes',
-  
+
   render: function () {
     if (!this.props.text) {
       return React.DOM.div({});
     }
     return React.DOM.div({className: this.props.className || 'notes', dangerouslySetInnerHTML: {__html: this.calculateMeasurement(this.props.text)}});
   },
-  
+
   calculateMeasurement: function (text){
     var context = {
           breadboard: this.props.breadboard
         },
-        components = this.props.breadboard ? this.props.breadboard.getComponents() : null, 
+        components = this.props.breadboard ? this.props.breadboard.getComponents() : null,
         result,
         key;
-    
+
     // short-circuit
     if (text === undefined || text === null || text === "") {
       return "";
@@ -26,10 +26,10 @@ module.exports = React.createClass({
     if (!isNaN(Number(text))) {
       return text;
     }
-    
+
     // convert to string
     text = "" + text;
-    
+
     // add the components to the the context to eval in
     if (components) {
       for (var key in components) {
@@ -38,7 +38,7 @@ module.exports = React.createClass({
         }
       }
     }
-    
+
     // replace all the bracket delimited javascript
     result = text.replace(/\[([^\]]+)\]/g, function (match, contents) {
       try {
@@ -50,20 +50,20 @@ module.exports = React.createClass({
         return '<i>n/a</i>';
       }
     });
-    
+
     // convert
     result = this.convertMeasurement(result);
-    
+
     // and standardize
     result = this.standardizeUnits(result);
-    
+
     return result;
   },
-  
+
   isMeasurement: function(string) {
     return !!string.match(/^\s?\d+.?\d*\s?\D+\s?$/);
   },
-  
+
   convertMeasurement: function(measurement) {
     if (!this.isMeasurement(measurement)){
       return measurement
@@ -123,7 +123,7 @@ module.exports = React.createClass({
   round: function(num, dec) {
     return Math.round( Math.round( num * Math.pow( 10, dec + 2 ) ) / Math.pow( 10, 2 ) ) / Math.pow(10,dec);
   },
-  
+
   standardizeUnits: function (string) {
     return string
       .replace(/ohms/gi,"&#x2126;")

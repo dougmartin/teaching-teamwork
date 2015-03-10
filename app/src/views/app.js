@@ -4,10 +4,10 @@ var PageView              = React.createFactory(require('./page.jsx')),
     logController         = require('../controllers/log'),
     userController        = require('../controllers/user'),
     config                = require('../config');
-    
+
 module.exports = React.createClass({
   displayName: 'App',
-  
+
   getInitialState: function () {
     return {
       activity: null,
@@ -16,29 +16,29 @@ module.exports = React.createClass({
       client: null
     };
   },
-  
+
   render: function () {
     return PageView({
-      activity: this.state.activity, 
-      circuit: this.state.circuit, 
-      breadboard: this.state.breadboard, 
+      activity: this.state.activity,
+      circuit: this.state.circuit,
+      breadboard: this.state.breadboard,
       client: this.state.client
     });
   },
-  
+
   componentDidMount: function () {
     // load blank workbench
     sparks.createWorkbench({"circuit": []}, "breadboard-wrapper");
 
     // load and start activity
-    this.loadActivity(window.location.hash.substring(1) || "two-resistors");    
+    this.loadActivity(window.location.hash.substring(1) || "two-resistors");
   },
-  
+
   loadActivity: function(activityName) {
     var self = this,
         localPrefix = 'local:',
         rawData, data, activityUrl, request;
-    
+
     if (activityName.substr(0, localPrefix.length) == localPrefix) {
       var rawData = localStorage.getItem(activityName);
       if (rawData) {
@@ -64,8 +64,8 @@ module.exports = React.createClass({
 
       request.send();
     }
-  },  
-  
+  },
+
   parseActivity: function (activityName, rawData) {
     var parsedData;
     try {
@@ -87,13 +87,13 @@ module.exports = React.createClass({
 
     userController.init(ttWorkbench.clients.length, function(clientNumber) {
       var circuit = (1 * clientNumber) + 1;
-      
+
       logController.setClientNumber(clientNumber);
       workbenchAdaptor = new WorkbenchAdaptor(clientNumber)
       workbenchFBConnector = new WorkbenchFBConnector(userController, clientNumber, workbenchAdaptor);
       workbench = workbenchAdaptor.processTTWorkbench(ttWorkbench);
       sparks.createWorkbench(workbench, "breadboard-wrapper");
-      
+
       self.setState({
         client: ttWorkbench.clients[circuit - 1],
         circuit: circuit,

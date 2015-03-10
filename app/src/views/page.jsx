@@ -4,15 +4,15 @@ var ChatView = require('./chat.jsx'),
     config = require('../config');
 
 module.exports = React.createClass({
-  
+
   displayName: 'Page',
-  
+
   render: function() {
     var activity = this.props.activity ? this.props.activity : {},
         activityName = activity.name ? ': ' + activity.name : '',
         circuit = this.props.circuit ? (<h2>Circuit { this.props.circuit }</h2>) : null,
         notes = this.props.client ? (this.props.client.notes || "") : "";
-        
+
     return (
       <div className="tt-page">
         <h1>Teaching Teamwork{ activityName }</h1>

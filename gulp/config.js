@@ -3,6 +3,10 @@ var dest = './dist';
 var bower = './bower_components';
 
 module.exports = {
+  trim: {
+    src: app + '/**/*',
+    dest: app
+  },
   js: {
     src: app + '/src/app.js',
     allSrc: app + '/src/**/*',

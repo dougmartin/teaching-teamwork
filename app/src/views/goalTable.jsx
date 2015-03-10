@@ -1,6 +1,6 @@
 module.exports = React.createClass({
   displayName: 'GoalTable',
-  
+
   render: function() {
     var rows = this.props.goal.map(function(val, i) {
       return (<tr key={i}>
