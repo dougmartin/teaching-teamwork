@@ -3,7 +3,7 @@ var userController;
 // add a global UserRegistrationView variable because its statics are called in other modules
 module.exports = UserRegistrationView = React.createClass({
   displayName: 'UserRegistration',
-  
+
   statics: {
     // open a dialog with props object as props
     open: function(_userController, data) {
