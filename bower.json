@@ -4,6 +4,7 @@
   "dependencies": {
     "breadboard": "0.0.2",
     "codemirror": "5.0.0",
-    "jsonlint": "1.6.0"
+    "jsonlint": "1.6.0",
+    "mathjs": "1.4.0"
   }
 }
