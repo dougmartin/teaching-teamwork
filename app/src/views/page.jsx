@@ -1,5 +1,5 @@
 var ChatView = require('./chat.jsx'),
-    CalculatorView = require('./calculator.jsx'),
+    MathPadView = require('./mathpad.jsx'),
     NotesView = require('./notes'),
     EditorView = require('./editor'),
     config = require('../config');
@@ -23,7 +23,7 @@ module.exports = React.createClass({
         <div id="breadboard-wrapper"></div>
         { activity.clients && activity.clients.length > 1 ? (<ChatView {...activity} />) : null }
         <div id="image-wrapper">{ image }</div>
-        <CalculatorView />
+        <MathPadView />
         <div id="notes-wrapper"><NotesView text={ notes } className="tt-notes" breadboard={ this.props.breadboard } /></div>
         { editor }
       </div>
