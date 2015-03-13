@@ -13,7 +13,9 @@ module.exports = React.createClass({
       activity: null,
       circuit: 0,
       breadboard: null,
-      client: null
+      client: null,
+      editorState: null,
+      showEditor: !!window.location.search.match(/editor/)
     };
   },
 
@@ -22,7 +24,10 @@ module.exports = React.createClass({
       activity: this.state.activity,
       circuit: this.state.circuit,
       breadboard: this.state.breadboard,
-      client: this.state.client
+      client: this.state.client,
+      parseAndStartActivity: this.parseAndStartActivity,
+      editorState: this.state.editorState,
+      showEditor: this.state.showEditor
     });
   },
 
@@ -37,18 +42,49 @@ module.exports = React.createClass({
   loadActivity: function(activityName) {
     var self = this,
         localPrefix = 'local:',
-        rawData, data, activityUrl, request;
+        matches = activityName.match(/^((local):(.+)|(remote):([^/]+)\/(.+))$/),
+        setStateAndParseAndStartActivity = function (jsonData) {
+          if (jsonData) {
+            editorState.text = jsonData;
+            self.setState({editorState: editorState});
+            var parsedData = self.parseActivity(activityName, jsonData);
+            if (parsedData) {
+              self.startActivity(activityName, parsedData);
+            }
+          }
+        },
+        editorState;
 
-    if (activityName.substr(0, localPrefix.length) == localPrefix) {
+    if (matches && (matches[2] == 'local')) {
+      editorState = {via: 'local', filename: matches[3]};
+
       var rawData = localStorage.getItem(activityName);
       if (rawData) {
-        this.parseActivity(activityName, rawData);
+        setStateAndParseAndStartActivity(rawData);
       }
       else {
         alert("Could not find LOCAL activity at " + activityName);
       }
     }
+    else if (matches && (matches[4] == 'remote')) {
+      editorState = {via: 'user ' + matches[5], filename: matches[6], username: matches[5]};
+
+      var firebase = new Firebase('https://teaching-teamwork.firebaseio.com/dev/activities/' + editorState.username + '/' + editorState.filename);
+      firebase.once('value', function (snapshot) {
+        var jsonData = snapshot.val();
+        if (jsonData) {
+          setStateAndParseAndStartActivity(jsonData);
+        }
+        else {
+          alert("No data found for REMOTE activity at " + url);
+        }
+      }, function (error) {
+        alert("Could not find REMOTE activity at " + url);
+      });
+    }
     else {
+      editorState = {via: 'server', filename: activityName};
+
       activityUrl = config.modelsBase + activityName + ".json";
 
       request = new XMLHttpRequest();
@@ -56,7 +92,7 @@ module.exports = React.createClass({
 
       request.onload = function() {
         if (request.status >= 200 && request.status < 400) {
-          self.parseActivity(activityName, request.responseText);
+          setStateAndParseAndStartActivity(request.responseText);
         } else {
           alert("Could not find activity at "+activityUrl);
         }
@@ -66,16 +102,21 @@ module.exports = React.createClass({
     }
   },
 
+  parseAndStartActivity: function (activityName, rawData) {
+    var parsedData = this.parseActivity(activityName, rawData);
+    if (parsedData) {
+      this.startActivity(activityName, parsedData);
+    }
+  },
+
   parseActivity: function (activityName, rawData) {
-    var parsedData;
     try {
-      parsedData = JSON.parse(rawData);
+      return JSON.parse(rawData);
     }
     catch (e) {
       alert('Unable to parse JSON for ' + activityName);
-      return
+      return null;
     }
-    this.startActivity(activityName, parsedData);
   },
 
   startActivity: function (activityName, ttWorkbench) {
@@ -92,7 +133,12 @@ module.exports = React.createClass({
       workbenchAdaptor = new WorkbenchAdaptor(clientNumber)
       workbenchFBConnector = new WorkbenchFBConnector(userController, clientNumber, workbenchAdaptor);
       workbench = workbenchAdaptor.processTTWorkbench(ttWorkbench);
-      sparks.createWorkbench(workbench, "breadboard-wrapper");
+      try {
+        sparks.createWorkbench(workbench, "breadboard-wrapper");
+      }
+      catch (e) {
+        // sparks is throwing an error when computing the distance between points on load
+      }
 
       self.setState({
         client: ttWorkbench.clients[circuit - 1],
