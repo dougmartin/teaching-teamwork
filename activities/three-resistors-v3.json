@@ -5,13 +5,13 @@
     {
       "type": "battery",
       "UID": "source",
-      "voltage": 13.9,
+      "voltage": 12.5,
       "connections": "battery_1,battery_2"
     },
     {
       "type": "resistor",
       "UID": "rX",
-      "resistance": "240",
+      "resistance": "120",
       "connections": "battery_2,0:off_11",
       "hidden": true
     },
@@ -35,7 +35,7 @@
     {
       "show_multimeter": true,
       "showComponentEditor": true,
-      "notes": "Try to make the voltage across your resistor 4.1 volts.",
+      "notes": "Try to make the voltage across your resistor 6.92 volts.",
       "circuit": [
         {
           "type": "wire",
@@ -60,7 +60,7 @@
     {
       "show_multimeter": true,
       "showComponentEditor": true,
-      "notes": "Try to make the voltage across your resistor 3.6 volts.",
+      "notes": "Try to make the voltage across your resistor 1.43 volts.",
       "circuit": [
         {
           "type": "wire",
@@ -85,7 +85,7 @@
     {
       "show_multimeter": true,
       "showComponentEditor": true,
-      "notes": "Try to make the voltage across your resistor 4.9 volts.",
+      "notes": "Try to make the voltage across your resistor 3.84 volts.",
       "circuit": [
         {
           "type": "wire",
