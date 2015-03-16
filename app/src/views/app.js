@@ -35,8 +35,10 @@ module.exports = React.createClass({
     // load blank workbench
     sparks.createWorkbench({"circuit": []}, "breadboard-wrapper");
 
-    // load and start activity
-    this.loadActivity(window.location.hash.substring(1) || "two-resistors");
+    // load and start activity if not flagged to skip (for easier debugging)
+    if (!window.location.search.match(/no-activity/)) {
+      this.loadActivity(window.location.hash.substring(1) || "two-resistors");
+    }
   },
 
   loadActivity: function(activityName) {
