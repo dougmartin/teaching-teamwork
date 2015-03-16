@@ -8,7 +8,7 @@ var div = React.DOM.div,
 module.exports = React.createClass({
 
   displayName: 'EditorView',
-  
+
   componentDidMount: function() {
     var rawLoginInfo = localStorage.getItem(loginKey),
         loginInfo = rawLoginInfo ? JSON.parse(rawLoginInfo) : null;
@@ -218,7 +218,7 @@ module.exports = React.createClass({
             }));
           }
         },
-        
+
     email = email || prompt('Email?');
     password = password || (email ? prompt('Password?') : null);
 
